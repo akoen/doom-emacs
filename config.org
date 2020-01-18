@@ -50,7 +50,6 @@
       (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)"))))
 #+END_SRC
 
-
 *** Capture
 
 #+begin_src emacs-lisp :tangle yes
@@ -72,5 +71,53 @@
 *** Agenda
 
 #+begin_src emacs-lisp :tangle yes
-(setq org-deadline-warning-days 7)
+(setq org-deadline-warning-days 7
+      org-agenda-files '("~/Drive/Tasks"))
+#+end_src
+
+*** =org-super-agenda=
+#+begin_src emacs-lisp :tangle yes
+(use-package! org-super-agenda
+  :init
+  (setq org-super-agenda-groups '((:name "High Priority"
+                                         :time-grid t
+                                         :priority "A")
+                                  (:name "Habits"
+                                         :time-grid t
+                                         :tag "habit")
+                                  (:name "Personal"
+                                         :time-grid t
+                                         :and (:tag "personal"
+                                                    :not (:tag "habit")))
+                                  (:name "School"
+                                         :time-grid t
+                                         :file-path "school"))
+        org-super-agenda-header-map (make-sparse-keymap)) ;; removes custom keybindings which are in opposition to evil-org
+
+  :config
+  (org-super-agenda-mode))
+#+end_src
+
+** =mu4e=
+
+Everything must be Emacs
+
+#+begin_src emacs-lisp :tangle yes
+(use-package! mu4e
+  :ensure-system-package mu)
+
+(set-email-account! "arw.koen@gmail.com"
+                    '((mu4e-sent-folder       . "/gmail/Sent Mail")
+                      (mu4e-drafts-folder     . "/gmail/Drafts")
+                      (mu4e-trash-folder      . "/gmail/Trash")
+                      (mu4e-refile-folder     . "/gmail/All Mail")
+                      (mu4e-compose-signature . "---\nHenrik Lissner")
+                      (smtpmail-debug-info    . t)
+                      (smtpmail-smtp-server   . "smtp.gmail.com")
+                      (smtpmail-smtp-service  . 587)
+                      (smtpmail-smtp-user     . "arw.koen")
+                      (smtpmail-stream-type   . starttls))
+                    t)
+
+(setq auth-sources "~/.authinfo.gpg")
 #+end_src
