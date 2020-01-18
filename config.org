@@ -15,11 +15,22 @@
 #+end_src
 
 ** Font
+
+Set default fonts
+
 #+begin_src emacs-lisp :tangle yes
-(setq doom-font (font-spec :family "Fira Code" :size 14)
-      doom-variable-pitch-font (font-spec :family "Input Sans Narrow" :size 14))
+(setq doom-font "Fira Code 10"
+      doom-variable-pitch-font "Input Sans Narrow 10")
 #+end_src
-(setq doom-font (font-spec :family "monospace" :size 14))
+
+
+Scale to display
+
+#+begin_src emacs-lisp :tangle yes
+(set-face-attribute 'default nil :height 90)
+#+end_src
+
+#+RESULTS:
 
 ** Miscellaneous
 #+begin_src emacs-lisp :tangle yes
@@ -49,7 +60,6 @@
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)"))))
 #+END_SRC
-
 
 *** Capture
 
