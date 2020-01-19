@@ -57,14 +57,16 @@ Scale to display
 *** Todo keywords
 
 #+BEGIN_SRC emacs-lisp :tangle yes
+(after! org
 (setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)"))))
+      (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
 #+END_SRC
 
 *** Capture
 
 #+begin_src emacs-lisp :tangle yes
-(setq org-capture-templates
+(after! org
+  (setq org-capture-templates
       `(("t" "Todo" entry (file "~/Drive/Tasks/refile.org")
          "* TODO %?")
         ("j" "Journal" entry
@@ -76,7 +78,7 @@ Scale to display
         ("p" "Protocol" entry (file "~/Drive/Tasks/refile.org")
          "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
         ("L" "Protocol Link" entry (file "~/Drive/Tasks/refile.org")
-         "%(org-web-tools--url-as-readable-org \"%:link\")" :immediate-finish t)))
+         "%(org-web-tools--url-as-readable-org \"%:link\")" :immediate-finish t))))
 #+END_SRC
 
 *** Agenda
