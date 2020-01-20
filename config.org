@@ -50,6 +50,8 @@ Scale to display
 ** =org-mode=
 #+begin_src emacs-lisp :tangle yes
 (after! org
+  (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6)
+  (remove-hook 'org-mode-hook #'auto-fill-mode) ;;CONFIRM
   (setq org-directory (concat my/drive-dir "Tasks/")
         org-id-locations-file (concat org-directory ".orgids")
         org-todo-keywords
