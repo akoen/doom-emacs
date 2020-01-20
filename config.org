@@ -60,8 +60,8 @@ Scale to display
 
 #+BEGIN_SRC emacs-lisp :tangle yes
 (after! org
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
 #+END_SRC
 
 *** Capture
