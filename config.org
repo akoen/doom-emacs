@@ -50,20 +50,16 @@ Scale to display
 ** =org-mode=
 #+begin_src emacs-lisp :tangle yes
 (after! org
-(setq org-directory (concat my/drive-dir "Tasks/"))
-  )
+  (setq org-directory (concat my/drive-dir "Tasks/")
+        org-id-locations-file (concat org-directory ".orgids")
+        org-todo-keywords
+        (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
 #+end_src
-
-*** Todo keywords
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)"))))
-#+END_SRC
 
 *** Capture
 
 #+begin_src emacs-lisp :tangle yes
+(after! org-capture
 (setq org-capture-templates
       `(("t" "Todo" entry (file "~/Drive/Tasks/refile.org")
          "* TODO %?")
@@ -76,14 +72,15 @@ Scale to display
         ("p" "Protocol" entry (file "~/Drive/Tasks/refile.org")
          "* %^{Title}\nSource: %u, %c\n #+BEGIN_QUOTE\n%i\n#+END_QUOTE\n\n\n%?")
         ("L" "Protocol Link" entry (file "~/Drive/Tasks/refile.org")
-         "%(org-web-tools--url-as-readable-org \"%:link\")" :immediate-finish t)))
+         "%(org-web-tools--url-as-readable-org \"%:link\")" :immediate-finish t))))
 #+END_SRC
 
 *** Agenda
 
 #+begin_src emacs-lisp :tangle yes
+(after! org-agenda
 (setq org-deadline-warning-days 7
-      org-agenda-files '("~/Drive/Tasks"))
+      org-agenda-files '("~/Drive/Tasks")))
 #+end_src
 
 *** =org-super-agenda=
