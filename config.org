@@ -55,6 +55,12 @@ Scale to display
   "Archive directory")
 
 #+end_src
+* Keybinds
+
+#+begin_src emacs-lisp :tangle yes
+(map! :leader
+      "f t" #'find-in-dotfiles)
+#+end_src
 * Packages
 ** =org-mode=
 #+begin_src emacs-lisp :tangle yes
@@ -140,3 +146,14 @@ Everything must be Emacs
 (setq auth-sources "~/.authinfo.gpg")
 #+end_src
 
+* Functions
+** Browse dotfiles
+
+Open a file in my dotfiles directory.
+
+#+begin_src emacs-lisp :tangle yes
+(defun find-in-dotfiles ()
+  "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
+  (interactive)
+  (doom-project-find-file (expand-file-name "~/.dotfiles")))
+#+end_src
