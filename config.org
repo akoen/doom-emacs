@@ -43,6 +43,7 @@ Scale to display
 ** Miscellaneous
 #+begin_src emacs-lisp :tangle yes
 (setq display-line-numbers-type 'relative)
+(global-auto-revert-mode +1)
 #+end_src
 
 ** Directories
