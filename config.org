@@ -69,7 +69,7 @@ Scale to display
   (setq org-directory (concat my/drive-dir "Tasks/")
         org-id-locations-file (concat org-directory ".orgids")
         org-todo-keywords
-        (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
+        (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
 #+end_src
 
 *** Capture
