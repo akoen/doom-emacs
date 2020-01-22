@@ -32,10 +32,17 @@ Scale to display
 
 #+RESULTS:
 
+** Text wrapping
+#+begin_src emacs-lisp :tangle yes
+(global-visual-line-mode +1)
+(auto-fill-mode -1)
+(remove-hook 'org-mode-hook #'auto-fill-mode) ;;CONFIRM
+(remove-hook 'text-mode-hook #'auto-fill-mode) ;;CONFIRM
+#+end_src
+
 ** Miscellaneous
 #+begin_src emacs-lisp :tangle yes
 (setq display-line-numbers-type 'relative)
-
 (global-auto-revert-mode +1)
 #+end_src
 
@@ -48,30 +55,29 @@ Scale to display
   "Archive directory")
 
 #+end_src
+* Keybinds
+
+#+begin_src emacs-lisp :tangle yes
+(map! :leader
+      "f t" #'find-in-dotfiles)
+#+end_src
 * Packages
 ** =org-mode=
 #+begin_src emacs-lisp :tangle yes
 (after! org
-  (setq org-directory (concat my/drive-dir "Tasks/")
-        org-hide-emphasis-markers t)
   (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6)
-  (remove-hook 'org-mode-hook #'auto-fill-mode)) ;;CONFIRM
-
+  (setq org-directory (concat my/drive-dir "Tasks/")
+        org-hide-emphasis-markers t
+        org-id-locations-file (concat org-directory ".orgids")
+        org-todo-keywords
+        (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
 #+end_src
-
-*** Todo keywords
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(after! org
-  (setq org-todo-keywords
-        (quote ((sequence "TODO(t)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
-#+END_SRC
 
 *** Capture
 
 #+begin_src emacs-lisp :tangle yes
-(after! org
-  (setq org-capture-templates
+(after! org-capture
+(setq org-capture-templates
       `(("t" "Todo" entry (file "~/Drive/Tasks/refile.org")
          "* TODO %?")
         ("j" "Journal" entry
@@ -89,8 +95,9 @@ Scale to display
 *** Agenda
 
 #+begin_src emacs-lisp :tangle yes
+(after! org-agenda
 (setq org-deadline-warning-days 7
-      org-agenda-files '("~/Drive/Tasks"))
+      org-agenda-files '("~/Drive/Tasks")))
 #+end_src
 
 *** =org-super-agenda=
@@ -122,20 +129,36 @@ Everything must be Emacs
 
 #+begin_src emacs-lisp :tangle yes
 (use-package! mu4e
-  :ensure-system-package mu)
+  :ensure-system-package mu
+  :init
+  (setq sendmail-program "/usr/bin/msmtp"
+        message-sendmail-f-is-evil 't
+        message-send-mail-function 'message-send-mail-with-sendmail
+        message-sendmail-extra-arguments '("--read-envelope-from"))
 
-(set-email-account! "arw.koen@gmail.com"
-                    '((mu4e-sent-folder       . "/gmail/Sent Mail")
-                      (mu4e-drafts-folder     . "/gmail/Drafts")
-                      (mu4e-trash-folder      . "/gmail/Trash")
-                      (mu4e-refile-folder     . "/gmail/All Mail")
-                      (mu4e-compose-signature . "---\nHenrik Lissner")
-                      (smtpmail-debug-info    . t)
-                      (smtpmail-smtp-server   . "smtp.gmail.com")
-                      (smtpmail-smtp-service  . 587)
-                      (smtpmail-smtp-user     . "arw.koen")
-                      (smtpmail-stream-type   . starttls))
-                    t)
+  (set-email-account! "arw.koen@gmail.com"
+                      '((mu4e-sent-folder       . "/gmail/Sent Mail")
+                        (mu4e-drafts-folder     . "/gmail/Drafts")
+                        (mu4e-trash-folder      . "/gmail/Trash")
+                        (mu4e-refile-folder     . "/gmail/All Mail")
+                        (mu4e-compose-signature . "---\nHenrik Lissner")
+                        (smtpmail-debug-info    . t))
+                        ;; (smtpmail-smtp-server   . "smtp.gmail.com")
+                        ;; (smtpmail-default-smtp-server . "smtp.gmail.com")
+                        ;; (smtpmail-smtp-service  . 587)
+                        ;; (smtpmail-smtp-user     . "arw.koen")
+                        ;; (smtpmail-stream-type   . starttls))
+                      t))
+#+end_src
 
-(setq auth-sources "~/.authinfo.gpg")
+* Functions
+** Browse dotfiles
+
+Open a file in my dotfiles directory.
+
+#+begin_src emacs-lisp :tangle yes
+(defun find-in-dotfiles ()
+  "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
+  (interactive)
+  (doom-project-find-file (expand-file-name "~/.dotfiles")))
 #+end_src
