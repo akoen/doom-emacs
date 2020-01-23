@@ -130,24 +130,20 @@ Everything must be Emacs
 #+begin_src emacs-lisp :tangle yes
 (use-package! mu4e
   :ensure-system-package mu
-  :init
-  (setq sendmail-program "/usr/bin/msmtp"
-        message-sendmail-f-is-evil 't
-        message-send-mail-function 'message-send-mail-with-sendmail
-        message-sendmail-extra-arguments '("--read-envelope-from"))
 
+  :init
   (set-email-account! "arw.koen@gmail.com"
                       '((mu4e-sent-folder       . "/gmail/Sent Mail")
                         (mu4e-drafts-folder     . "/gmail/Drafts")
                         (mu4e-trash-folder      . "/gmail/Trash")
                         (mu4e-refile-folder     . "/gmail/All Mail")
                         (mu4e-compose-signature . "---\nHenrik Lissner")
-                        (smtpmail-debug-info    . t))
-                        ;; (smtpmail-smtp-server   . "smtp.gmail.com")
-                        ;; (smtpmail-default-smtp-server . "smtp.gmail.com")
-                        ;; (smtpmail-smtp-service  . 587)
-                        ;; (smtpmail-smtp-user     . "arw.koen")
-                        ;; (smtpmail-stream-type   . starttls))
+                        (smtpmail-debug-info    . t)
+                        (smtpmail-smtp-server   . "smtp.gmail.com")
+                        (smtpmail-default-smtp-server . "smtp.gmail.com")
+                        (smtpmail-smtp-service  . 587)
+                        (smtpmail-smtp-user     . "arw.koen")
+                        (smtpmail-stream-type   . starttls))
                       t))
 #+end_src
 
