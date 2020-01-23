@@ -65,12 +65,23 @@ Scale to display
 ** =org-mode=
 #+begin_src emacs-lisp :tangle yes
 (after! org
-  (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6)
-  (setq org-directory (concat my/drive-dir "Tasks/")
+  (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6 :ignore t) ;; remove ignore to make popup
+  (setq org-treat-S-cursor-todo-selection-as-state-change nil
+        org-directory (concat my/drive-dir "Tasks/")
         org-hide-emphasis-markers t
         org-id-locations-file (concat org-directory ".orgids")
         org-todo-keywords
-        (quote ((sequence "TODO(t)" "NEXT(n)" "SOMEDAY(s)" "MAYBE(m)" "|" "DONE(d)" "FAILED(f)")))))
+        (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+        org-todo-state-tags-triggers
+        (quote (("CANCELLED" ("CANCELLED" . t))
+                ("WAITING" ("WAITING" . t))
+                ("HOLD" ("WAITING") ("HOLD" . t))
+                (done ("WAITING") ("HOLD"))
+                ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))))
+
 #+end_src
 
 *** Capture
