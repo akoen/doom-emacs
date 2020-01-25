@@ -113,9 +113,11 @@ Automatically sort org buffers by property
         org-directory (concat my/drive-dir "Tasks/")
         org-hide-emphasis-markers t
         org-id-locations-file (concat org-directory ".orgids")
+        org-refile-targets (quote ((nil :maxlevel . 1)
+                                   (org-agenda-files :maxlevel . 1)))
         org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+                (sequence "SOMEDAY(s@/!) WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
         org-todo-state-tags-triggers
         (quote (("CANCELLED" ("CANCELLED" . t))
                 ("WAITING" ("WAITING" . t))
