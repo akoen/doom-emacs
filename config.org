@@ -181,3 +181,28 @@ Automatically sort org buffers by property
   (org-super-agenda-mode))
 #+end_src
 
+*** Reviews
+
+GTD style reviews.
+
+#+begin_src emacs-lisp :tangle yes
+(defun my/weekly-review ()
+  (interactive)
+  (let ((org-capture-templates '(("w" "Weekly Review" entry (file+datetree "~/Drive/Tasks/reviews.org")
+                                  (file "~/Drive/Tasks/Templates/weekly-review.org")))))
+    (progn
+      (org-capture nil "w")
+      (org-capture-finalize t)
+      (org-speed-move-safe 'outline-up-heading)
+      (org-narrow-to-subtree))))
+
+(defun my/monthly-review ()
+  (interactive)
+  (let ((org-capture-templates '(("m" "Monthly Review" entry (file+datetree "~/Drive/Tasks/reviews.org")
+                                  (file "~/Drive/Tasks/Templates/monthly-review.org")))))
+    (progn
+      (org-capture nil "m")
+      (org-capture-finalize t)
+      (org-speed-move-safe 'outline-up-heading)
+      (org-narrow-to-subtree))))
+#+end_src
