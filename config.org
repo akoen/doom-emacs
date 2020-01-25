@@ -27,7 +27,7 @@ Set default fonts
 Scale to display
 
 #+begin_src emacs-lisp :tangle yes
-(set-face-attribute 'default nil :height 90)
+(set-face-attribute 'default nil :height 100)
 #+end_src
 
 #+RESULTS:
@@ -48,10 +48,10 @@ Scale to display
 
 ** Directories
 #+begin_src emacs-lisp :tangle yes
-(defconst my/drive-dir "~/Drive/"
+(defconst drive-dir "~/Drive/"
   "The root Drive directory, where all documents are stored.")
 
-(defconst my/archive-dir (concat my/drive-dir "Archive/")
+(defconst archive-dir (concat drive-dir "Archive/")
   "Archive directory")
 
 #+end_src
@@ -110,12 +110,15 @@ Automatically sort org buffers by property
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6 :ignore t) ;; remove ignore to make popup
   (setq org-treat-S-cursor-todo-selection-as-state-change nil
-        org-directory (concat my/drive-dir "Tasks/")
+        org-directory (concat drive-dir "Tasks/")
+        org-archive-location (concat archive-dir "Tasks/archive_" (format-time-string "%Y") ".org::datetree/")
         org-hide-emphasis-markers t
         org-id-locations-file (concat org-directory ".orgids")
+        org-refile-targets (quote ((nil :maxlevel . 1)
+                                   (org-agenda-files :maxlevel . 1)))
         org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+                (sequence "SOMEDAY(s@/!)" "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
         org-todo-state-tags-triggers
         (quote (("CANCELLED" ("CANCELLED" . t))
                 ("WAITING" ("WAITING" . t))
@@ -178,28 +181,28 @@ Automatically sort org buffers by property
   (org-super-agenda-mode))
 #+end_src
 
-** =mu4e=
+*** Reviews
 
-Everything must be Emacs
+GTD style reviews.
 
 #+begin_src emacs-lisp :tangle yes
-(use-package! mu4e
-  :ensure-system-package mu
+(defun my/weekly-review ()
+  (interactive)
+  (let ((org-capture-templates '(("w" "Weekly Review" entry (file+datetree "~/Drive/Tasks/reviews.org")
+                                  (file "~/Drive/Tasks/Templates/weekly-review.org")))))
+    (progn
+      (org-capture nil "w")
+      (org-capture-finalize t)
+      (org-speed-move-safe 'outline-up-heading)
+      (org-narrow-to-subtree))))
 
-  :init
-  (set-email-account! "arw.koen@gmail.com"
-                      '((mu4e-sent-folder       . "/gmail/Sent Mail")
-                        (mu4e-drafts-folder     . "/gmail/Drafts")
-                        (mu4e-trash-folder      . "/gmail/Trash")
-                        (mu4e-refile-folder     . "/gmail/All Mail")
-                        (mu4e-compose-signature . "---\nHenrik Lissner")
-                        (smtpmail-debug-info    . t)
-                        (smtpmail-smtp-server   . "smtp.gmail.com")
-                        (smtpmail-default-smtp-server . "smtp.gmail.com")
-                        (smtpmail-smtp-service  . 587)
-                        (smtpmail-smtp-user     . "arw.koen")
-                        (smtpmail-stream-type   . starttls))
-                      t))
+(defun my/monthly-review ()
+  (interactive)
+  (let ((org-capture-templates '(("m" "Monthly Review" entry (file+datetree "~/Drive/Tasks/reviews.org")
+                                  (file "~/Drive/Tasks/Templates/monthly-review.org")))))
+    (progn
+      (org-capture nil "m")
+      (org-capture-finalize t)
+      (org-speed-move-safe 'outline-up-heading)
+      (org-narrow-to-subtree))))
 #+end_src
-
-
