@@ -206,3 +206,9 @@ GTD style reviews.
       (org-speed-move-safe 'outline-up-heading)
       (org-narrow-to-subtree))))
 #+end_src
+** =auctex=
+#+begin_src emacs-lisp :tangle yes
+(after! auctex
+  (setq TeX-parse-self t
+        TeX-auto-save t))
+#+end_src
