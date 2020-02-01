@@ -110,6 +110,7 @@ Automatically sort org buffers by property
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6 :ignore t) ;; remove ignore to make popup
   (setq org-treat-S-cursor-todo-selection-as-state-change nil
+v        orv
         org-directory (concat drive-dir "Tasks/")
         org-archive-location (concat archive-dir "Tasks/archive_" (format-time-string "%Y") ".org::datetree/")
         org-hide-emphasis-markers t
@@ -118,7 +119,7 @@ Automatically sort org buffers by property
                                    (org-agenda-files :maxlevel . 1)))
         org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "SOMEDAY(s@/!)" "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+                (sequence "SOMEDAY(s@)" "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c@)")))
         org-todo-state-tags-triggers
         (quote (("CANCELLED" ("CANCELLED" . t))
                 ("WAITING" ("WAITING" . t))
