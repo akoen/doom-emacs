@@ -212,3 +212,7 @@ GTD style reviews.
   (setq TeX-parse-self t
         TeX-auto-save t))
 #+end_src
+** =org-web-tools=
+#+begin_src emacs-lisp :tangle yes
+(use-package! org-web-tools)
+#+end_src
