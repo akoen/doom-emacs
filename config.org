@@ -118,7 +118,7 @@ Automatically sort org buffers by property
                                    (org-agenda-files :maxlevel . 1)))
         org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "SOMEDAY(s@/!)" "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+                (sequence "SOMEDAY(s@)" "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c@)")))
         org-todo-state-tags-triggers
         (quote (("CANCELLED" ("CANCELLED" . t))
                 ("WAITING" ("WAITING" . t))
