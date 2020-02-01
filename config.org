@@ -212,3 +212,20 @@ GTD style reviews.
   (setq TeX-parse-self t
         TeX-auto-save t))
 #+end_src
+** =yasnippet=
+
+This function allows for automatic snippet expansion like UltiSnips. See [[https://github.com/joaotavora/yasnippet/issues/998]]
+#+begin_src emacs-lisp :tangle yes
+(after! yasnippet
+  (defun my/yas-try-expanding-auto-snippets ()
+    (when (and (boundp 'yas-minor-mode) yas-minor-mode)
+      (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+        (yas-expand))))
+  (add-hook 'post-command-hook #'my/yas-try-expanding-auto-snippets)
+
+Do not add a newline at the end of a snippet file
+(add-hook 'snippet-mode-hook 'my/snippet-mode-hook)
+(defun my/snippet-mode-hook ()
+  "Custom behaviours for snippet-mode."
+  (setq-local require-final-newline nil)))
+#+end_src
