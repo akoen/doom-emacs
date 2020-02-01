@@ -110,7 +110,6 @@ Automatically sort org buffers by property
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6 :ignore t) ;; remove ignore to make popup
   (setq org-treat-S-cursor-todo-selection-as-state-change nil
-v        orv
         org-directory (concat drive-dir "Tasks/")
         org-archive-location (concat archive-dir "Tasks/archive_" (format-time-string "%Y") ".org::datetree/")
         org-hide-emphasis-markers t
@@ -128,7 +127,6 @@ v        orv
                 ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
                 ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
                 ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))))
-
 #+end_src
 
 *** Capture
@@ -216,6 +214,7 @@ GTD style reviews.
 ** =yasnippet=
 
 This function allows for automatic snippet expansion like UltiSnips. See [[https://github.com/joaotavora/yasnippet/issues/998]]
+
 #+begin_src emacs-lisp :tangle yes
 (after! yasnippet
   (defun my/yas-try-expanding-auto-snippets ()
@@ -224,11 +223,12 @@ This function allows for automatic snippet expansion like UltiSnips. See [[https
         (yas-expand))))
   (add-hook 'post-command-hook #'my/yas-try-expanding-auto-snippets)
 
-Do not add a newline at the end of a snippet file
+;; Do not require a newline after snippet files
 (add-hook 'snippet-mode-hook 'my/snippet-mode-hook)
 (defun my/snippet-mode-hook ()
   "Custom behaviours for snippet-mode."
   (setq-local require-final-newline nil)))
+#+end_src
 
 ** =org-web-tools=
 #+begin_src emacs-lisp :tangle yes
