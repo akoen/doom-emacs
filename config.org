@@ -85,16 +85,16 @@ Automatically sort org buffers by property
       (org-back-to-heading)
       (forward-line 1)
       (when (< (point) subtree-end)
-	(re-search-forward "^\*+ " subtree-end t)))))
+        (re-search-forward "^\*+ " subtree-end t)))))
 
 (defun my/org-entry-sort-by-property nil
   (let ((property (org-entry-get (point) "SORT" 'INHERIT)))
     (when (and (not (seq-empty-p property))
-	       (my/org-entry-has-subentries))
+               (my/org-entry-has-subentries))
       (funcall #'org-sort-entries nil (string-to-char property) nil nil nil)))
   (let ((property_second (org-entry-get (point) "SORT_AFTER" 'INHERIT)))
     (when (and (not (seq-empty-p property_second))
-	       (my/org-entry-has-subentries))
+               (my/org-entry-has-subentries))
       (funcall #'org-sort-entries nil (string-to-char property_second) nil nil nil))))
 
 (defun my/org-buffer-sort-by-property (&optional MATCH)
@@ -102,7 +102,7 @@ Automatically sort org buffers by property
   (org-map-entries #'my/org-entry-sort-by-property MATCH 'file)
   (org-set-startup-visibility))
 
-(add-hook 'org-mode-hook #'my/org-buffer-sort-by-property)
+;; (add-hook 'org-mode-hook #'my/org-buffer-sort-by-property)
 #+end_src
 * Packages
 ** =org-mode=
@@ -110,6 +110,7 @@ Automatically sort org buffers by property
 (after! org
   (set-popup-rule! "^\\*Org Agenda" :regexp t :size 0.6 :ignore t) ;; remove ignore to make popup
   (setq org-treat-S-cursor-todo-selection-as-state-change nil
+v        orv
         org-directory (concat drive-dir "Tasks/")
         org-archive-location (concat archive-dir "Tasks/archive_" (format-time-string "%Y") ".org::datetree/")
         org-hide-emphasis-markers t
@@ -118,7 +119,7 @@ Automatically sort org buffers by property
                                    (org-agenda-files :maxlevel . 1)))
         org-todo-keywords
         (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
-                (sequence "SOMEDAY(s@/!)" "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)")))
+                (sequence "SOMEDAY(s@)" "WAITING(w@)" "HOLD(h@)" "|" "CANCELLED(c@)")))
         org-todo-state-tags-triggers
         (quote (("CANCELLED" ("CANCELLED" . t))
                 ("WAITING" ("WAITING" . t))
@@ -228,4 +229,8 @@ Do not add a newline at the end of a snippet file
 (defun my/snippet-mode-hook ()
   "Custom behaviours for snippet-mode."
   (setq-local require-final-newline nil)))
+
+** =org-web-tools=
+#+begin_src emacs-lisp :tangle yes
+(use-package! org-web-tools)
 #+end_src

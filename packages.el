@@ -52,3 +52,4 @@
 ;(package! builtin-package :recipe (:branch "develop"))
 (package! use-package-ensure-system-package)
 (package! org-super-agenda)
+(package! org-web-tools)
