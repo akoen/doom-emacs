@@ -61,49 +61,6 @@ Scale to display
 (map! :leader
       "f t" #'find-in-dotfiles)
 #+end_src
-* Functions - Move back to place
-** Browse dotfiles
-
-Open a file in my dotfiles directory.
-
-#+begin_src emacs-lisp :tangle yes
-(defun find-in-dotfiles ()
-  "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
-  (interactive)
-  (doom-project-find-file (expand-file-name "~/.dotfiles")))
-#+end_src
-
-** Autosort
-
-Automatically sort org buffers by property
-
-#+begin_src emacs-lisp :tangle yes
-(defun my/org-entry-has-subentries ()
-  "Any entry with subheadings"
-  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
-    (save-excursion
-      (org-back-to-heading)
-      (forward-line 1)
-      (when (< (point) subtree-end)
-        (re-search-forward "^\*+ " subtree-end t)))))
-
-(defun my/org-entry-sort-by-property nil
-  (let ((property (org-entry-get (point) "SORT" 'INHERIT)))
-    (when (and (not (seq-empty-p property))
-               (my/org-entry-has-subentries))
-      (funcall #'org-sort-entries nil (string-to-char property) nil nil nil)))
-  (let ((property_second (org-entry-get (point) "SORT_AFTER" 'INHERIT)))
-    (when (and (not (seq-empty-p property_second))
-               (my/org-entry-has-subentries))
-      (funcall #'org-sort-entries nil (string-to-char property_second) nil nil nil))))
-
-(defun my/org-buffer-sort-by-property (&optional MATCH)
-  (interactive)
-  (org-map-entries #'my/org-entry-sort-by-property MATCH 'file)
-  (org-set-startup-visibility))
-
-;; (add-hook 'org-mode-hook #'my/org-buffer-sort-by-property)
-#+end_src
 * Packages
 ** =org-mode=
 #+begin_src emacs-lisp :tangle yes
@@ -233,4 +190,47 @@ This function allows for automatic snippet expansion like UltiSnips. See [[https
 ** =org-web-tools=
 #+begin_src emacs-lisp :tangle yes
 (use-package! org-web-tools)
+#+end_src
+* Functions
+** Browse dotfiles
+
+Open a file in my dotfiles directory.
+
+#+begin_src emacs-lisp :tangle yes
+(defun find-in-dotfiles ()
+  "Open a file somewhere in ~/.dotfiles via a fuzzy filename search."
+  (interactive)
+  (doom-project-find-file (expand-file-name "~/.dotfiles")))
+#+end_src
+
+** Autosort
+
+Automatically sort org buffers by property
+
+#+begin_src emacs-lisp :tangle yes
+(defun my/org-entry-has-subentries ()
+  "Any entry with subheadings"
+  (let ((subtree-end (save-excursion (org-end-of-subtree t))))
+    (save-excursion
+      (org-back-to-heading)
+      (forward-line 1)
+      (when (< (point) subtree-end)
+        (re-search-forward "^\*+ " subtree-end t)))))
+
+(defun my/org-entry-sort-by-property nil
+  (let ((property (org-entry-get (point) "SORT" 'INHERIT)))
+    (when (and (not (seq-empty-p property))
+               (my/org-entry-has-subentries))
+      (funcall #'org-sort-entries nil (string-to-char property) nil nil nil)))
+  (let ((property_second (org-entry-get (point) "SORT_AFTER" 'INHERIT)))
+    (when (and (not (seq-empty-p property_second))
+               (my/org-entry-has-subentries))
+      (funcall #'org-sort-entries nil (string-to-char property_second) nil nil nil))))
+
+(defun my/org-buffer-sort-by-property (&optional MATCH)
+  (interactive)
+  (org-map-entries #'my/org-entry-sort-by-property MATCH 'file)
+  (org-set-startup-visibility))
+
+;; (add-hook 'org-mode-hook #'my/org-buffer-sort-by-property)
 #+end_src
